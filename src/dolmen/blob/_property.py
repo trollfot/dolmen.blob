@@ -23,7 +23,7 @@ class BlobProperty(object):
         if field.readonly and field.has_key(self.__name):
             raise ValueError(self.__name, 'field is readonly')
 
-        if value is not None:
+        if value:
             file = BlobFile(data=value, filename=value.filename)
         else:
             file = None
