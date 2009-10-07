@@ -25,7 +25,7 @@ setup(name = name,
       install_requires=[
           'setuptools',
           'grok',
-          'ZODB>=3.9',
+          'ZODB3>=3.9',
           'dolmen.file',
       ],
       classifiers = [
