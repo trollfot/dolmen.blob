@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from _persistent import BlobFile
+from dolmen.blob import BlobFile
 
 _marker = object()
 
@@ -9,11 +9,8 @@ class BlobProperty(object):
     """Stores the given file data in a blob.
     """
     def __init__(self, field, name=None):
-        if name is None:
-            name = field.__name__
-
         self.__field = field
-        self.__name = name
+        self.__name = name or field.__name__
 
     def __set__(self, inst, value):
         name = self.__name

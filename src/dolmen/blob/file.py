@@ -1,20 +1,27 @@
 # -*- coding: utf-8 -*-
 
+from os.path import getsize
 from ZODB.blob import Blob
 from ZODB.interfaces import BlobError
-from os.path import getsize
 from dolmen.file import NamedFile
+from dolmen.blob import IBlobFile, IFileStorage
+from zope.interface import implements
+from zope.component import queryMultiAdapter
 from zope.cachedescriptors.property import CachedProperty
 
-R_CHUNK = 4092
+
+class StorageError(Exception):
+    """An error raised if the storage failed.
+    """
 
 
 class BlobFile(NamedFile):
+    implements(IBlobFile)
 
     def __init__(self, data=None, contentType='', filename=u''):
         self._blob = Blob()
         NamedFile.__init__(self, data, contentType, filename)
-
+        
     @CachedProperty
     def physical_path(self):
         try:
@@ -40,18 +47,18 @@ class BlobFile(NamedFile):
     def get(self, name, default=None):
          getattr(self, name, default)
 
-    def setData(self, value):
-        blob = self._blob.open('w')
-        data = value.read(R_CHUNK)
-        while data:
-            blob.write(data)
-            data = value.read(R_CHUNK)
-        blob.close()
+    @apply
+    def data():
+        
+        def set(self, value):
+            stored = queryMultiAdapter((self._blob, value), IFileStorage)
+            if stored is not True:
+                raise StorageError
 
-    def getData(self):
-        blob = self._blob.open('r')
-        data = blob.read()
-        blob.close()
-        return data
+        def get(self):
+            blob = self._blob.open('r')
+            data = blob.read()
+            blob.close()
+            return data
 
-    data = property(getData, setData)
+        return property(get, set)

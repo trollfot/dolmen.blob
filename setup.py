@@ -3,7 +3,7 @@ from os.path import join
 
 name = 'dolmen.blob'
 version = '0.1'
-readme = open("README.txt").read()
+readme = open(join('src', 'dolmen', 'blob', "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read().replace(name + ' - ', '')
 
 setup(name = name,
@@ -25,8 +25,9 @@ setup(name = name,
       install_requires=[
           'setuptools',
           'grok',
-          'ZODB3>=3.9',
+          'ZODB3>=3.9.2',
           'dolmen.file',
+          'zope.cachedescriptors'
       ],
       classifiers = [
         'Development Status :: 4 - Beta',
