@@ -12,6 +12,8 @@ dolmen.blob
   u'foo.txt'
   >>> blob.data
   'mydata'
+  >>> blob.contentType
+  'text/plain'
 
   >>> blob = BlobFile(data=u'some foreign data', filename="foo.txt")
   >>> blob.filename
