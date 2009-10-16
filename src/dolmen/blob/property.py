@@ -2,8 +2,8 @@
 
 from dolmen.blob import BlobFile
 
-_marker = object()
 
+_marker = object()
 
 class BlobProperty(object):
     """Stores the given file data in a blob.

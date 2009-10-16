@@ -3,8 +3,8 @@
 import grokcore.component as grok
 from ZODB.interfaces import IBlob
 from zope.interface import Interface
+from dolmen.blob import IFileStorage
 from dolmen.builtins import interfaces as base
-from dolmen.blob import IFileUpload, IFileStorage
 
 CHUNK = 1 << 12
 

@@ -9,13 +9,13 @@ dolmen.blob
 
   >>> blob = BlobFile(data='mydata', filename="foo.txt")
   >>> blob.filename
-  'foo.txt'
+  u'foo.txt'
   >>> blob.data
   'mydata'
 
   >>> blob = BlobFile(data=u'some foreign data', filename="foo.txt")
   >>> blob.filename
-  'foo.txt'
+  u'foo.txt'
   >>> blob.data
   'some foreign data'
 
@@ -31,4 +31,4 @@ dolmen.blob
   >>> blob = BlobFile(data={'something': 1})
   Traceback (most recent call last):
   ...
-  StorageError
+  StorageError: An error occured during the blob storage. Check the value type (<type 'dict'>). This value should implement IFile, IString or IUnicode (see `dolmen.builtins`).

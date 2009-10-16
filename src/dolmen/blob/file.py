@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 
-from os.path import getsize
 from ZODB.blob import Blob
 from ZODB.interfaces import BlobError
 from dolmen.file import NamedFile
@@ -16,9 +15,11 @@ class StorageError(Exception):
 
 
 class BlobFile(NamedFile):
+    """A INameFile component using a ZODB Blob to store the data.
+    """
     implements(IBlobFile)
 
-    def __init__(self, data=None, contentType='', filename=u''):
+    def __init__(self, data=None, contentType='', filename=None):
         self._blob = Blob()
         NamedFile.__init__(self, data, contentType, filename)
         
@@ -29,6 +30,9 @@ class BlobFile(NamedFile):
         except BlobError:
             filename = self._blob.committed()
         return filename
+
+    def __str__(self):
+        return self.data
 
     def __len__(self):
         file = self._blob.open('r')
@@ -41,24 +45,24 @@ class BlobFile(NamedFile):
 
     getSize = __len__
 
-    def __str__(self):
-        return self.data
- 
-    def get(self, name, default=None):
-         getattr(self, name, default)
-
     @apply
     def data():
-        
-        def set(self, value):
-            stored = queryMultiAdapter((self._blob, value), IFileStorage)
-            if stored is not True:
-                raise StorageError
-
+        """The blob property using a IFileStorage adapter
+        to write down the value.
+        """
         def get(self):
             blob = self._blob.open('r')
             data = blob.read()
             blob.close()
             return data
+        
+        def set(self, value):
+            stored = queryMultiAdapter((self._blob, value), IFileStorage)
+            if stored is not True:
+                raise StorageError(
+                    "An error occured during the blob storage. Check the "
+                    "value type (%r). This value should implement IFile, "
+                    "IString or IUnicode (see `dolmen.builtins`)."
+                    % value.__class__)
 
         return property(get, set)
