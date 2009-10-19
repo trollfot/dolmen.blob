@@ -8,16 +8,16 @@ history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires = [
     'setuptools',
-    'ZODB3>=3.9.2',
+    'ZODB3>=3.9.0',
     'dolmen.file>=0.1',
     'dolmen.builtins>=0.2',
     'grokcore.component',
-    'zope.cachedescriptors'
     ]
 
 tests_require = install_requires + [
     'zope.testing',
     'zope.app.testing',
+    'zope.app.zcmlfiles',
     ]
 
 setup(name = name,

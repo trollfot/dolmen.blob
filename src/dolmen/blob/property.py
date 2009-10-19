@@ -21,7 +21,8 @@ class BlobProperty(object):
             raise ValueError(self.__name, 'field is readonly')
 
         if value:
-            file = BlobFile(data=value, filename=value.filename)
+            filename = getattr(value, 'filename', None)
+            file = BlobFile(data=value, filename=filename)
         else:
             file = None
             

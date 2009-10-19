@@ -6,7 +6,6 @@ from dolmen.file import NamedFile
 from dolmen.blob import IBlobFile, IFileStorage
 from zope.interface import implements
 from zope.component import queryMultiAdapter
-from zope.cachedescriptors.property import CachedProperty
 
 
 class StorageError(Exception):
@@ -19,18 +18,10 @@ class BlobFile(NamedFile):
     """
     implements(IBlobFile)
 
-    def __init__(self, data=None, contentType='', filename=None):
+    def __init__(self, data='', contentType='', filename=None):
         self._blob = Blob()
         NamedFile.__init__(self, data, contentType, filename)
         
-    @CachedProperty
-    def physical_path(self):
-        try:
-            filename = self._blob.committed()
-        except BlobError:
-            filename = self._blob.committed()
-        return filename
-
     def __str__(self):
         return self.data
 
@@ -66,3 +57,18 @@ class BlobFile(NamedFile):
                     % value.__class__)
 
         return property(get, set)
+
+
+    @property
+    def physical_path(self):
+        try:
+            filename = self._blob.committed()
+        except BlobError:
+            # We retry, the data has now been commited
+            # if possible by the ZODB blob.
+            try:
+                filename = self._blob.committed()
+            except BlobError:
+                # The retry failed, we return None.
+                return None
+        return filename

@@ -2,7 +2,8 @@
     xmlns:grok="http://namespaces.zope.org/grok"
     xmlns="http://namespaces.zope.org/zope">
 
-  <include package="grokcore.component" file="meta.zcml" /> 
+  <include package="grokcore.component" file="meta.zcml" />
+  <include package="dolmen.file" />
   <grok:grok package="." />
 
 </configure>
