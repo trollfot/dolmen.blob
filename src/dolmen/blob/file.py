@@ -43,7 +43,7 @@ class BlobValue(object):
         elif not contentType:
             self.mimeType = "application/octet-stream"
         else:
-            self.mimeType = mimeType
+            self.mimeType = contentType
 
         if parameters is None:
             parameters = {}

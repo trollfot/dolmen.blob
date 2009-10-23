@@ -1,6 +1,14 @@
 Changelog
 =========
 
+0.2.1 (2009-10-23)
+------------------
+
+* Corrected a bug of a variable used when not defined, if a mimeType
+  was given using the contentType argument at the BlobValue creation.
+  Added a test to fix this behavior.
+
+
 0.2 (2009-10-23)
 ----------------
 

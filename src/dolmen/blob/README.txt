@@ -40,6 +40,14 @@ against some common uses, implemented by `zope.file.file.File`,
   >>> blob.data
   'some random data'
 
+  >>> blob = BlobFile(contentType="plain/text")
+  >>> blob.filename
+  u''
+  >>> blob.data
+  ''
+  >>> blob.contentType
+  'plain/text'
+
   >>> import cStringIO
   >>> data = cStringIO.StringIO("mydata")
   >>> blob = BlobFile(data=data)
