@@ -4,8 +4,8 @@ Changelog
 0.2 (2009-10-23)
 ----------------
 
-* Added a bunch of new tests to test the compatibility with the new
-  packages.
+* Added a bunch of new tests for the compatibility with the new
+  packages used.
 
 * A new access view is available for the `IBlobFile` returning a
   DownloadResult object, from `zope.file`. This access view also uses
