@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 import grokcore.view as grok
 from dolmen.blob import IBlobFile
 from zope.file.download import DownloadResult, getHeaders

@@ -13,6 +13,7 @@ install_requires = [
     'zope.mimetype',
     'dolmen.file>=0.3.1',
     'dolmen.builtins>=0.2',
+    'grokcore.view',
     'grokcore.component',
     ]
 
