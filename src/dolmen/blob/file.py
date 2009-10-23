@@ -3,17 +3,15 @@
 from ZODB.blob import Blob
 from ZODB.interfaces import BlobError
 from persistent import Persistent
-from dolmen.file import NamedFile
-from zope.schema.fieldproperty import FieldProperty
-from dolmen.blob import IBlobFile, IFileStorage
-from zope.interface import implements
-from zope.component import queryMultiAdapter, getUtility
-from zope.location.interfaces import ILocation
-from zope.mimetype.interfaces import IMimeTypeGetter
-from zope.contenttype import guess_content_type
 
-def cleanupFileName(filename):
-    return unicode(filename.split('\\')[-1].split('/')[-1])
+from zope.interface import implements
+from zope.location.interfaces import ILocation
+from zope.contenttype import guess_content_type
+from zope.component import queryMultiAdapter, getUtility
+from zope.schema.fieldproperty import FieldProperty
+
+from dolmen.file import clean_filename
+from dolmen.blob import IBlobFile, IFileStorage
 
 
 class StorageError(Exception):
@@ -29,9 +27,6 @@ class BlobValue(object):
     """
     implements(IBlobFile)
     
-    __name__ = None
-    __parent__ = None
-
     filename = FieldProperty(IBlobFile['filename'])
     mimeType = FieldProperty(IBlobFile['mimeType'])
     parameters = FieldProperty(IBlobFile['parameters'])
@@ -40,7 +35,7 @@ class BlobValue(object):
                  filename=None, parameters=None):
 
         if filename:
-            filename = cleanupFileName(filename)
+            filename = clean_filename(filename)
             self.filename = filename
 
         if not contentType and filename:
@@ -124,3 +119,7 @@ class BlobValue(object):
 class BlobFile(Persistent, BlobValue):
     """A INameFile component using a ZODB Blob to store the data.
     """
+    implements(ILocation)
+    
+    __name__ = None
+    __parent__ = None

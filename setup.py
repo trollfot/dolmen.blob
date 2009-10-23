@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.blob'
-version = '0.2dev'
+version = '0.2'
 readme = open(join('src', 'dolmen', 'blob', "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
@@ -11,13 +11,15 @@ install_requires = [
     'ZODB3>=3.9.0',
     'zope.file',
     'zope.mimetype',
-    'dolmen.file>=0.1',
+    'dolmen.file>=0.3.1',
     'dolmen.builtins>=0.2',
     'grokcore.component',
     ]
 
 tests_require = install_requires + [
+    'zope.size',
     'zope.testing',
+    'zope.filerepresentation',
     'zope.app.testing',
     'zope.app.zcmlfiles',
     ]

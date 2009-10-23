@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from dolmen.blob import BlobFile
+from dolmen.blob import BlobValue
 
 
 _marker = object()
@@ -22,7 +22,7 @@ class BlobProperty(object):
 
         if value:
             filename = getattr(value, 'filename', None)
-            file = BlobFile(data=value, filename=filename)
+            file = BlobValue(data=value, filename=filename)
         else:
             file = None
             
@@ -39,8 +39,6 @@ class BlobProperty(object):
             value = getattr(field, 'default', _marker)
             if value is _marker:
                 raise AttributeError(self.__name)
-        if value:
-            value.__parent__ = inst
         return value
 
     def __getattr__(self, name):

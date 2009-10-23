@@ -11,8 +11,8 @@ Compatibility
 =============
 
 In order to make sure that our BlobFile is functional, we test it
-against some common uses, implemented by zope.app.file.file.File and
-dolmen.file.NamedFile::
+against some common uses, implemented by `zope.file.file.File`,
+`zope.app.file.file.File` and `dolmen.file.NamedFile`::
 
   >>> from dolmen.blob import BlobFile, IBlobFile
 
@@ -31,6 +31,8 @@ dolmen.file.NamedFile::
   'mydata'
   >>> blob.contentType
   'text/plain'
+  >>> blob.mimeType
+  'text/plain'
 
   >>> blob = BlobFile(data=u'some random data', filename="foo.txt")
   >>> blob.filename
@@ -45,20 +47,48 @@ dolmen.file.NamedFile::
   'mydata'
   >>> blob.getSize()
   6L
+  >>> blob.size
+  6
 
+  >>> from zope.size.interfaces import ISized
+  >>> sized = ISized(blob)
+  >>> sized
+  <zope.file.browser.Sized object at ...>
+  >>> sized.sizeForDisplay()
+  u'1 KB'
+  >>> sized.sizeForSorting()
+  ('byte', 6)
+
+  >>> from zope.filerepresentation.interfaces import IReadFile, IWriteFile
+  >>> reader = IReadFile(blob)
+  >>> writer = IWriteFile(blob)
+
+  >>> reader.read()
+  'mydata'
+  >>> reader.size()
+  6
+
+  >>> writer.write('changing data')
+  >>> reader.read()
+  'changing data'
+  >>> reader.size()
+  13
 
 Let's verify the implementation in depth::
 
   >>> from dolmen.file import INamedFile
   >>> from zope.interface import verify
-  >>> from zope.app.file.interfaces import IFile
-  
+  >>> import zope.file 
+  >>> import zope.app.file
+
   >>> blob = BlobFile(data='my data')
   >>> verify.verifyObject(IBlobFile, blob)
   True
   >>> verify.verifyObject(INamedFile, blob)
   True
-  >>> verify.verifyObject(IFile, blob)
+  >>> verify.verifyObject(zope.app.file.interfaces.IFile, blob)
+  True
+  >>> verify.verifyObject(zope.file.interfaces.IFile, blob)
   True
 
 
@@ -254,4 +284,9 @@ FileField using a BlobProperty::
   >>> manfred = root['mammoth']
   >>> manfred.binary = 'Foobar'
   >>> manfred.binary
-  <dolmen.blob.file.BlobFile object at ...>
+  <dolmen.blob.file.BlobValue object at ...>
+
+  >>> verify.verifyObject(IBlobFile, manfred.binary)
+  True
+  >>> ISized(manfred.binary).sizeForDisplay()
+  u'1 KB'
