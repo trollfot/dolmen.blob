@@ -178,7 +178,7 @@ your content, formatted in a convenient way, to publish them easily::
   >>> print info.effectiveParameters
   {}
   
-It allows a rough handling of the data encoding too:
+It allows a rough handling of the data encoding too::
 
   >>> from zope.mimetype.interfaces import IContentTypeEncoded
 
