@@ -2,10 +2,18 @@
 
 from ZODB.blob import Blob
 from ZODB.interfaces import BlobError
+from persistent import Persistent
 from dolmen.file import NamedFile
+from zope.schema.fieldproperty import FieldProperty
 from dolmen.blob import IBlobFile, IFileStorage
 from zope.interface import implements
-from zope.component import queryMultiAdapter
+from zope.component import queryMultiAdapter, getUtility
+from zope.location.interfaces import ILocation
+from zope.mimetype.interfaces import IMimeTypeGetter
+from zope.contenttype import guess_content_type
+
+def cleanupFileName(filename):
+    return unicode(filename.split('\\')[-1].split('/')[-1])
 
 
 class StorageError(Exception):
@@ -13,28 +21,68 @@ class StorageError(Exception):
     """
 
 
-class BlobFile(NamedFile):
-    """A INameFile component using a ZODB Blob to store the data.
+class BlobValue(object):
+    """A BlobValue is using a ZODB Blob to store data. It handles both
+    the zope.app.file and zope.file features. It can be used as a blob
+    attribute, for more complex object. It can also be used as a mixin
+    with a Persistent class.
     """
     implements(IBlobFile)
+    
+    __name__ = None
+    __parent__ = None
 
-    def __init__(self, data='', contentType='', filename=None):
+    filename = FieldProperty(IBlobFile['filename'])
+    mimeType = FieldProperty(IBlobFile['mimeType'])
+    parameters = FieldProperty(IBlobFile['parameters'])
+    
+    def __init__(self, data='', contentType='',
+                 filename=None, parameters=None):
+
+        if filename:
+            filename = cleanupFileName(filename)
+            self.filename = filename
+
+        if not contentType and filename:
+            self.mimeType, enc = guess_content_type(name=filename)
+        elif not contentType:
+            self.mimeType = "application/octet-stream"
+        else:
+            self.mimeType = mimeType
+
+        if parameters is None:
+            parameters = {}
+        else:
+            parameters = dict(parameters)
+        self.parameters = parameters
+
         self._blob = Blob()
-        NamedFile.__init__(self, data, contentType, filename)
-        
-    def __str__(self):
-        return self.data
+        self.data = data
+
+    @property
+    def contentType(self):
+        return self.mimeType
+
+    def open(self, mode="r"):
+        return self._blob.open(mode)
+
+    def openDetached(self):
+        return file(self._blob.committed(), 'rb')
 
     def __len__(self):
-        file = self._blob.open('r')
-        try:
-            file.seek(0, 2)
-            result = file.tell()
-        finally:
-            file.close()
-        return result
+        if self._blob == "":
+            return 0
+        reader = self._blob.open()
+        reader.seek(0,2)
+        size = reader.tell()
+        reader.close()
+        return size
 
     getSize = __len__
+    
+    @property
+    def size(self):
+        return int(self.getSize())
 
     @apply
     def data():
@@ -58,7 +106,6 @@ class BlobFile(NamedFile):
 
         return property(get, set)
 
-
     @property
     def physical_path(self):
         try:
@@ -72,3 +119,8 @@ class BlobFile(NamedFile):
                 # The retry failed, we return None.
                 return None
         return filename
+
+
+class BlobFile(Persistent, BlobValue):
+    """A INameFile component using a ZODB Blob to store the data.
+    """

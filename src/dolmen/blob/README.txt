@@ -17,8 +17,8 @@ dolmen.file.NamedFile::
   >>> from dolmen.blob import BlobFile, IBlobFile
 
   >>> blob = BlobFile()
-  >>> blob.contentType
-  ''
+  >>> print blob.contentType
+  application/octet-stream
   >>> blob.data
   ''
   >>> blob.filename
@@ -115,6 +115,62 @@ usecase::
   "[('something', 1)]"
 
 
+Mimetype and charset
+====================
+
+`dolmen.blob` provides components implementing the `zope.mimetype`
+IContentTypeAware interface. It allows your content to be manipulated
+in order to set a mimetype and extensive headers coptions.
+
+Several adapters are provided by `zope.mimetype`. We don't want to
+review them all, but there are some interesting ones.
+
+The IContentInfo components allow you to get detailed information for
+your content, formatted in a convenient way, to publish them easily::
+
+  >>> from zope.interface import alsoProvides
+  >>> from zope.mimetype.interfaces import IContentInfo
+
+  >>> blob = BlobFile(data=u'some random data', filename="foo.txt")
+  >>> info = IContentInfo(blob)
+  >>> print info
+  <zope.mimetype.contentinfo.ContentInfo object at ...>
+  >>> print info.effectiveMimeType
+  text/plain
+  >>> print info.effectiveParameters
+  {}
+  
+It allows a rough handling of the data encoding too:
+
+  >>> from zope.mimetype.interfaces import IContentTypeEncoded
+
+  >>> encoded = BlobFile(data=u'La Pe\xf1a',
+  ...                    parameters={'charset': 'utf-8'})
+
+  >>> info = IContentInfo(encoded)
+  >>> print info.effectiveParameters
+  {}
+
+  >>> alsoProvides(encoded, IContentTypeEncoded)
+  >>> info = IContentInfo(encoded)
+
+  >>> info.effectiveParameters
+  {'charset': 'utf-8'}
+
+  >>> info.effectiveMimeType
+  'application/octet-stream'
+
+  >>> info.contentType
+  'application/octet-stream;charset=utf-8'
+
+  >>> codec = info.getCodec()
+  >>> codec.name
+  'utf-8'
+
+  >>> print info.decode(encoded.data)
+  La Peña
+
+
 Accesses
 ========
 
@@ -159,7 +215,7 @@ browser, using a "file_publish" view::
   >>> request = TestRequest()
   >>> view = getMultiAdapter((myblob, request), name='file_publish')
   >>> view
-  <dolmen.file.access.FilePublisher object at ...>
+  <dolmen.blob.access.FilePublisher object at ...>
 
   >>> view.update()
   >>> for key, value in view.response.getHeaders(): print key, repr(value)
@@ -169,7 +225,7 @@ browser, using a "file_publish" view::
   Content-Disposition 'attachment; filename="data.txt"'
 
   >>> view.render()
-  'my data'
+  <zope.file.download.DownloadResult object at ...>
 
 
 Property

@@ -9,6 +9,8 @@ history = open(join('docs', 'HISTORY.txt')).read()
 install_requires = [
     'setuptools',
     'ZODB3>=3.9.0',
+    'zope.file',
+    'zope.mimetype',
     'dolmen.file>=0.1',
     'dolmen.builtins>=0.2',
     'grokcore.component',

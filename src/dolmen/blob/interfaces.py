@@ -1,12 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from dolmen.builtins import IFile
+from dolmen import builtins
 from dolmen.file import INamedFile
+from zope.file.interfaces import IFile
 from zope.publisher.browser import FileUpload
 from zope.interface import Interface, Attribute, classImplements
 
 
-class IBlobFile(INamedFile):
+class IBlobFile(INamedFile, IFile):
     """A marker interface for file using ZODB blobs.
     """
     physical_path = Attribute("Physical path of the stored file.")
@@ -20,7 +21,7 @@ class IFileStorage(Interface):
         """
 
 
-class IFileUpload(IFile):
+class IFileUpload(builtins.IFile):
     """Defines an Upload object created by zope.publisher
     for data elements in forms.
     """
