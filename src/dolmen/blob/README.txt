@@ -153,6 +153,19 @@ usecase::
   "[('something', 1)]"
 
 
+Blob copy
+---------
+
+`dolmen.blob` provides a blob to blob copy, using shutils::
+
+  >>> source = BlobFile(data='Some data here')
+  >>> destination = BlobFile(data='')
+
+  >>> destination.data = source
+  >>> destination.data
+  'Some data here'
+
+
 Mimetype and charset
 ====================
 

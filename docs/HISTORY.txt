@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.3 (2009-11-08)
+----------------
+
+* Added Blob to Blob copy, using a new storage. Added tests for this
+  new storage.
+
+
 0.2.1 (2009-10-23)
 ------------------
 
