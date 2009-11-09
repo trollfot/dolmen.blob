@@ -316,8 +316,8 @@ FileField using a BlobProperty::
 Copy using zope.copy
 ====================
 
-A copy hook exists for locatable objects. It allows to copy stored
-blobs transparently, while working `zope.copy`::
+A copy hook exists for IBlob objects. It allows to copy stored
+blobs transparently, while working with `zope.copy`::
 
   >>> import zope.copy
 
@@ -346,4 +346,3 @@ It works recursiverly::
   u'filename.txt'
   >>> judith.binary.mimeType
   'text/plain'
-
