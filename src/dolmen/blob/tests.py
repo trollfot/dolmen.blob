@@ -1,18 +1,23 @@
 import os.path
 import unittest
-from zope.testing import doctest
+from zope.testing import doctest, module
 from zope.app.testing import functional
 
 ftesting_zcml = os.path.join(os.path.dirname(__file__), 'ftesting.zcml')
 FunctionalLayer = functional.ZCMLLayer(
     ftesting_zcml, __name__, 'FunctionalLayer',allow_teardown=True)
 
+def setUp(test):
+    module.setUp(test, 'dolmen.blob.ftests')
+
+def tearDown(test):
+    module.tearDown(test)
+
 def test_suite():
     """Testing suite.
     """
     readme = functional.FunctionalDocFileSuite(
-        'README.txt',
-        globs={"__name__": "dolmen.blob"},
+        'README.txt', setUp=setUp, tearDown=tearDown,
         optionflags=(doctest.ELLIPSIS + doctest.NORMALIZE_WHITESPACE),
         )
 

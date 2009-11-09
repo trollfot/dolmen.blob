@@ -153,8 +153,8 @@ usecase::
   "[('something', 1)]"
 
 
-Blob copy
----------
+Blob to blob storage
+--------------------
 
 `dolmen.blob` provides a blob to blob copy, using shutils::
 
@@ -311,3 +311,39 @@ FileField using a BlobProperty::
   True
   >>> ISized(manfred.binary).sizeForDisplay()
   u'1 KB'
+
+
+Copy using zope.copy
+====================
+
+A copy hook exists for locatable objects. It allows to copy stored
+blobs transparently, while working `zope.copy`::
+
+  >>> import zope.copy
+
+  >>> source = BlobFile(data='Some data here')
+  >>> target = zope.copy.copy(source)
+  >>> target.data
+  'Some data here'
+
+It works recursiverly::
+
+  >>> from zope.container.btree import BTreeContainer
+  >>> root['gunther'] = BTreeContainer()
+  >>> root['gunther']['mammoth'] = MyContent()
+
+  >>> manfred = root['gunther']['mammoth']
+  >>> manfred.binary = 'Some data with no interest'
+  >>> manfred.binary.filename = u"filename.txt"
+  >>> manfred.binary.mimeType = "text/plain"
+
+  >>> copy_of_gunther = zope.copy.copy(root['gunther'])
+  >>> judith = copy_of_gunther['mammoth']
+
+  >>> judith.binary.data
+  'Some data with no interest'
+  >>> judith.binary.filename
+  u'filename.txt'
+  >>> judith.binary.mimeType
+  'text/plain'
+
