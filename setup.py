@@ -45,7 +45,6 @@ setup(name = name,
       tests_require = tests_require,
       install_requires = install_requires,
       extras_require = {'test': tests_require},
-      test_suite="dolmen.blob",
       classifiers = [
         'Development Status :: 4 - Beta',
         'Environment :: Web Environment',
