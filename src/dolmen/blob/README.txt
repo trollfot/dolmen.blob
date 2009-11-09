@@ -218,9 +218,6 @@ It allows a rough handling of the data encoding too::
   >>> codec.name
   'utf-8'
 
-  >>> print info.decode(encoded.data)
-  La Peña
-
 
 Accesses
 ========
