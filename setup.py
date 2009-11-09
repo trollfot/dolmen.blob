@@ -7,14 +7,16 @@ readme = open(join('src', 'dolmen', 'blob', "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires = [
+    'ZODB3 >= 3.9.0',
+    'dolmen.builtins >= 0.2',
+    'dolmen.file >= 0.3.2',
+    'grokcore.component',
+    'grokcore.view',
     'setuptools',
-    'ZODB3>=3.9.0',
+    'zope.copy',
     'zope.file',
     'zope.mimetype',
-    'dolmen.file>=0.3.2',
-    'dolmen.builtins>=0.2',
-    'grokcore.view',
-    'grokcore.component',
+    'zope.location >= 3.7.0'
     ]
 
 tests_require = install_requires + [
