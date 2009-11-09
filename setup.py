@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.blob'
-version = '0.4dev'
+version = '0.4'
 readme = open(join('src', 'dolmen', 'blob', "README.txt")).read()
 history = open(join('docs', 'HISTORY.txt')).read()
 

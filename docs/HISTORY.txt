@@ -1,6 +1,13 @@
 Changelog
 =========
 
+0.4 (2009-11-09)
+----------------
+
+* Added ICopyHook for ZODB.interfaces.IBlob objects. Now the data is
+  copied using `zope.copy`.
+
+
 0.3 (2009-11-08)
 ----------------
 
