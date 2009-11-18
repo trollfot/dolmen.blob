@@ -15,7 +15,7 @@ install_requires = [
     'grokcore.component',
     'grokcore.view',
     'setuptools',
-    'zope.copy == 3.5.0',
+    'zope.copy >= 3.5.0',
     'zope.file',
     'zope.mimetype',
     'zope.location >= 3.7.0'
