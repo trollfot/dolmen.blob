@@ -1,7 +1,15 @@
 Changelog
 =========
 
-0.4 (2009-11-18)
+0.4.1 (2009-11-18)
+------------------
+
+* Now using Grok 1.1a1 versions.
+* zope.copy is no longer pinned down to version 3.5 but to 3.5 and
+  greater.
+
+
+0.4 (2009-11-09)
 ----------------
 
 * Added ICopyHook for ZODB.interfaces.IBlob objects. Now the data is
