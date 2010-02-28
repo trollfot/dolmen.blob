@@ -6,7 +6,6 @@
   <include package="grokcore.component" file="meta.zcml" />
 
   <include package="dolmen.file" />
-  <include package="zope.file" />
   <include package="zope.location" />
   <include package="zope.mimetype" />
   <grok:grok package="." />

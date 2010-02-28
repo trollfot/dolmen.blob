@@ -2,12 +2,13 @@
 
 from dolmen.blob import BlobValue
 
-
 _marker = object()
+
 
 class BlobProperty(object):
     """Stores the given file data in a blob.
     """
+
     def __init__(self, field, name=None):
         self.__field = field
         self.__name = name or field.__name__
@@ -16,8 +17,8 @@ class BlobProperty(object):
         name = self.__name
         field = self.__field.bind(inst)
         fields = inst.__dict__
-        
-        if field.readonly and field.has_key(self.__name):
+
+        if field.readonly and self.__name in field:
             raise ValueError(self.__name, 'field is readonly')
 
         if value:
@@ -25,7 +26,7 @@ class BlobProperty(object):
             file = BlobValue(data=value, filename=filename)
         else:
             file = None
-            
+
         fields[name] = file
         inst._p_changed = True
 

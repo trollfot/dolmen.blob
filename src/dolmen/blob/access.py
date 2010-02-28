@@ -14,6 +14,6 @@ class FilePublisher(grok.View):
                                downloadName=self.context.filename,
                                contentDisposition="attachment"):
             self.request.response.setHeader(k, v)
- 
+
     def render(self):
         return DownloadResult(self.context)

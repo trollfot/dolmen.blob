@@ -11,8 +11,8 @@ Compatibility
 =============
 
 In order to make sure that our BlobFile is functional, we test it
-against some common uses, implemented by `zope.file.file.File`,
-`zope.app.file.file.File` and `dolmen.file.NamedFile`::
+against some common uses, implemented by `zope.file.file.File` and
+`dolmen.file.NamedFile`::
 
   >>> from dolmen.blob import BlobFile, IBlobFile
 
@@ -53,15 +53,13 @@ against some common uses, implemented by `zope.file.file.File`,
   >>> blob = BlobFile(data=data)
   >>> blob.data
   'mydata'
-  >>> blob.getSize()
-  6L
   >>> blob.size
   6
 
   >>> from zope.size.interfaces import ISized
   >>> sized = ISized(blob)
   >>> sized
-  <zope.file.browser.Sized object at ...>
+  <dolmen.file.size.Sized object at ...>
   >>> sized.sizeForDisplay()
   u'1 KB'
   >>> sized.sizeForSorting()
@@ -87,14 +85,11 @@ Let's verify the implementation in depth::
   >>> from dolmen.file import INamedFile
   >>> from zope.interface import verify
   >>> import zope.file 
-  >>> import zope.app.file
 
   >>> blob = BlobFile(data='my data')
   >>> verify.verifyObject(IBlobFile, blob)
   True
   >>> verify.verifyObject(INamedFile, blob)
-  True
-  >>> verify.verifyObject(zope.app.file.interfaces.IFile, blob)
   True
   >>> verify.verifyObject(zope.file.interfaces.IFile, blob)
   True

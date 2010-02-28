@@ -2,10 +2,7 @@
 
 import shutil
 import grokcore.component as grok
-
-from ZODB.blob import Blob
 from ZODB.interfaces import IBlob
-from dolmen.blob import IBlobFile
 from zope.copy.interfaces import ICopyHook, ResumeCopy
 
 
@@ -24,7 +21,7 @@ class BlobFileCopyHook(grok.Adapter):
 
         # We init the blob to get a consistent state.
         target.__init__()
-        
+
         fsrc = self.context.open('r')
         fdst = target.open('w')
         shutil.copyfileobj(fsrc, fdst)
