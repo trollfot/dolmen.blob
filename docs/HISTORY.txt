@@ -15,8 +15,8 @@ Changelog
 * Echoed ``dolmen.file`` changes and dropped ``zope.app.file`` support.
 
 * Dependency cleaned. Had to retain ``zope.app.testing`` and
- ``zope.app.appsetup`` since we need the ZODB support for the
- tests. All other zope.app dependencies have been severed.
+  ``zope.app.appsetup`` since we need the ZODB support for the
+  tests. All other zope.app dependencies have been severed.
 
 
 0.4.1 (2009-11-18)
