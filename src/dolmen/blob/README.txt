@@ -3,7 +3,7 @@ dolmen.blob
 ===========
 
 `dolmen.blob` is a layer above `dolmen.file`, using the ZODB blobs as
-a storage facility. It respects the `zope.app.file` IFile and the
+a storage facility. It respects the `zope.file` IFile and the
 `dolmen.file` INamedFile interfaces.
 
 
