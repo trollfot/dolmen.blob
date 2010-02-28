@@ -6,6 +6,12 @@ Changelog
 
 * Cleaned base code. We are now fully pep8 compliant.
 
+* ``dolmen.blob`` now has its own ``zope.filerepresentation``
+  adapters, in order to use the natural getters and setters. We no
+  longer need to include ``zope.file`` in the `configure.zcml`, as
+  ``dolmen.blob`` now provides all the needed components to be
+  independant.
+
 * Echoed ``dolmen.file`` changes and dropped ``zope.app.file`` support.
 
 * Dependency cleaned. Had to retain ``zope.app.testing`` and
