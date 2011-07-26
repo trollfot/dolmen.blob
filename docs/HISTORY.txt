@@ -1,6 +1,15 @@
 Changelog
 =========
 
+2.0a1 (2011-07-26)
+------------------
+
+* ``dolmen.blob`` is now meant to be used in the Cromlech framework.
+  To do that, the package now uses ``cromlech.file``. The Zope packages
+  depending on ``zope.publishing`` have been removed. We no longer work
+  with ``zope.file``.
+
+
 0.5.0 (2010-02-28)
 ------------------
 

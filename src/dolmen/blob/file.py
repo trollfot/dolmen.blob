@@ -10,7 +10,7 @@ from zope.contenttype import guess_content_type
 from zope.component import queryMultiAdapter
 from zope.schema.fieldproperty import FieldProperty
 
-from dolmen.file import clean_filename
+from cromlech.file import clean_filename
 from dolmen.blob import IBlobFile, IFileStorage
 
 
@@ -28,35 +28,24 @@ class BlobValue(object):
     implements(IBlobFile)
 
     filename = FieldProperty(IBlobFile['filename'])
-    mimeType = FieldProperty(IBlobFile['mimeType'])
-    parameters = FieldProperty(IBlobFile['parameters'])
+    content_type = FieldProperty(IBlobFile['content_type'])
 
-    def __init__(self, data='', contentType='',
+    def __init__(self, data='', content_type='',
                  filename=None, parameters=None):
 
         if filename:
             filename = clean_filename(filename)
             self.filename = filename
 
-        if not contentType and filename:
-            self.mimeType, enc = guess_content_type(name=filename)
-        elif not contentType:
-            self.mimeType = "application/octet-stream"
+        if not content_type and filename:
+            self.content_type, enc = guess_content_type(name=filename)
+        elif not content_type:
+            self.content_type = "application/octet-stream"
         else:
-            self.mimeType = contentType
-
-        if parameters is None:
-            parameters = {}
-        else:
-            parameters = dict(parameters)
-        self.parameters = parameters
+            self.content_type = content_type
 
         self._blob = Blob()
         self.data = data
-
-    @property
-    def contentType(self):
-        return self.mimeType
 
     def open(self, mode="r"):
         return self._blob.open(mode)

@@ -4,49 +4,40 @@ from setuptools import setup, find_packages
 from os.path import join
 
 name = 'dolmen.blob'
-version = '1.0dev'
-readme = open(join('src', 'dolmen', 'blob', "README.txt")).read()
+version = '2.0a1'
+readme = open('README.txt').read()
 history = open(join('docs', 'HISTORY.txt')).read()
 
 install_requires = [
     'ZODB3 >= 3.9.0',
+    'cromlech.file',
     'dolmen.builtins >= 0.3.1',
-    'dolmen.file >= 0.5.1',
+    'dolmen.file >= 2.0a1',
     'grokcore.component',
-    'grokcore.view',
     'setuptools',
-    'zope.component >= 3.9.1',
+    'zope.component',
     'zope.contenttype',
-    'zope.copy >= 3.5.0',
-    'zope.file',
+    'zope.copy',
     'zope.filerepresentation',
     'zope.interface',
-    'zope.location >= 3.7.0',
-    'zope.mimetype',
-    'zope.publisher',
+    'zope.location',
     'zope.schema',
     ]
 
 tests_require = [
+    'pytest',
     'transaction',
-    'zope.container',
-    'zope.size',
-    'zope.testing',
-    'zope.security',
-    'zope.traversing',
-    'zope.app.testing',
-    'zope.app.appsetup',
     ]
 
 setup(name=name,
       version=version,
       description='Dolmen zodb blob handlers',
       long_description=readme + '\n\n' + history,
-      keywords='Grok Zope3 CMS Dolmen',
+      keywords='Grok Cromlech CMS Dolmen',
       author='Souheil Chelfouh',
       author_email='trollfot@gmail.com',
       url='',
-      license='GPL',
+      license='ZPL',
       packages=find_packages('src', exclude=['ez_setup']),
       package_dir={'': 'src'},
       namespace_packages=['dolmen'],
@@ -57,12 +48,7 @@ setup(name=name,
       install_requires=install_requires,
       extras_require={'test': tests_require},
       classifiers=[
-        'Development Status :: 4 - Beta',
-        'Environment :: Web Environment',
-        'Framework :: Zope3',
-        'Intended Audience :: Other Audience',
-        'License :: OSI Approved :: GNU General Public License (GPL)',
-        'Operating System :: OS Independent',
-        'Programming Language :: Python',
-      ],
+          'Environment :: Web Environment',
+          'Programming Language :: Python',
+          ],
       )
