@@ -3,6 +3,7 @@
 import shutil
 import grokcore.component as grok
 
+from cgi import FieldStorage
 from ZODB.interfaces import IBlob
 from zope.interface import Interface
 from dolmen.blob import IFileStorage, IBlobFile
@@ -36,6 +37,17 @@ def blob_to_blob(target, source):
     shutil.copyfileobj(fsrc, fdst)
     fdst.close()
     fsrc.close()
+    return True
+
+
+@grok.implementer(IFileStorage)
+@grok.adapter(IBlob, FieldStorage)
+def cgi_fielstorage_blob(target, fieldstorage):
+    fieldstorage.file.seek(0)
+    fdst = target.open('w')
+    shutil.copyfileobj(fieldstorage.file, fdst)
+    fdst.close()
+    fieldstorage.file.seek(0)
     return True
 
 

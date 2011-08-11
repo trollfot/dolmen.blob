@@ -5,6 +5,7 @@ import transaction
 import cStringIO
 import zope.component
 
+from cgi import FieldStorage
 from BTrees.OOBTree import OOBTree
 from ZODB.DB import DB
 from ZODB.DemoStorage import DemoStorage
@@ -199,3 +200,27 @@ def test_copy_hooks():
     assert judith.binary.data == 'Some data with no interest'
     assert judith.binary.filename == u'filename.txt'
     assert judith.binary.content_type == 'text/plain'
+
+
+boundary = "-----------------------------721837373350705526688164684"
+
+POST = """--%(boundary)s
+Content-Disposition: form-data; name="file"; filename="test.txt"
+Content-Type: text/plain
+
+Testing 123.
+--%(boundary)s--
+""" % {'boundary': boundary}
+
+
+def test_cgi_fieldstorage():
+
+    env = {'REQUEST_METHOD': 'POST',
+           'CONTENT_TYPE': 'multipart/form-data; boundary=%s' % boundary,
+           'CONTENT_LENGTH': len(POST)}
+
+    fs = FieldStorage(fp=cStringIO.StringIO(POST), environ=env)
+    file = fs['file']
+    
+    blob = BlobFile(data=file)
+    assert blob.data == 'Testing 123.'
