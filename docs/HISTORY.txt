@@ -1,6 +1,13 @@
 Changelog
 =========
 
+2.0a3 (2011-08-11)
+------------------
+
+* Corrected bug in the property and made sure that __nonzero__ was NOT used
+  to check if the value exists.
+
+
 2.0a2 (2011-08-11)
 ------------------
 
