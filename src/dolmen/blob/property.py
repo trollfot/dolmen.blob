@@ -18,10 +18,10 @@ class BlobProperty(object):
         field = self.__field.bind(inst)
         fields = inst.__dict__
 
-        if field.readonly and self.__name in field:
+        if field.readonly and name in fields:
             raise ValueError(self.__name, 'field is readonly')
 
-        if value:
+        if value is not None:
             filename = getattr(value, 'filename', None)
             file = BlobValue(data=value, filename=filename)
         else:
